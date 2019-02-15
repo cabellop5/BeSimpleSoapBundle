@@ -80,9 +80,10 @@ class WebServiceContext
 
             $dumper = new Dumper($definition, array('stylesheet' => $this->options['wsdl_stylesheet']));
             $cache->write($dumper->dump());
+
         }
 
-        return (string) $cache;
+        return $cache->getPath();
     }
 
     public function getServiceBinder()
