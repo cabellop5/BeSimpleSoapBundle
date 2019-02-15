@@ -16,19 +16,20 @@ use BeSimple\SoapBundle\Handler\ExceptionHandler;
 use BeSimple\SoapBundle\Soap\SoapRequest;
 use BeSimple\SoapBundle\Soap\SoapResponse;
 use BeSimple\SoapServer\SoapServerBuilder;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\FlattenException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
+use Symfony\Component\Debug\Exception\FlattenException;
 
 /**
  * @author Christian Kerl <christian-kerl@web.de>
  * @author Francis Besset <francis.besset@gmail.com>
  */
-class SoapWebServiceController extends ContainerAware
+class SoapWebServiceController implements ContainerAwareInterface
 {
     /**
      * @var \SoapServer
@@ -54,6 +55,11 @@ class SoapWebServiceController extends ContainerAware
      * @var array
      */
     private $headers = array();
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * @return \BeSimple\SoapBundle\Soap\SoapResponse
@@ -246,5 +252,10 @@ class SoapWebServiceController extends ContainerAware
         }
 
         return $this->container->get($context);
+    }
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 }
